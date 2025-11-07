@@ -1,4 +1,4 @@
-# **CSI104-2025-01 - Proposta de Trabalho Final**
+# **CSI104-2025-02 - Proposta de Trabalho Final**
 
 ## *Discente: Jonas Elias Kretli*
 
@@ -29,7 +29,8 @@
 <!-- Construir alguns protótipos para a aplicação, disponibilizá-los no Github e descrever o que foi considerado. //-->
 ### 4. Protótipo
 
-  v1.1 Protótipo de estruturas de dado e funções básica de criação de arquivos (07/11)
+  v0.1 Protótipo de estruturas de dado e funções básica de criação de arquivos (07/11)
+  v0.2 Adição de interface de usuário. Correção de erros críticos. Correção de geração de arquivos. Correção de uso de arquivos
   
 ### 5. Referências
 
