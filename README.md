@@ -30,7 +30,8 @@
 ### 4. Protótipo
 
   v0.1 Protótipo de estruturas de dado e funções básica de criação de arquivos (07/11)
-  v0.2 Adição de interface de usuário. Correção de erros críticos. Correção de geração de arquivos. Correção de uso de arquivos
+  
+  v0.2 Adição de interface de usuário. Correção de erros críticos. Correção de geração de arquivos. Correção de uso de arquivos (07/11)
   
 ### 5. Referências
 
