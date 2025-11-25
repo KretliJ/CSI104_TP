@@ -4,6 +4,13 @@ import os
 from . import data_access
 from . import utils
 from .models import * 
+from . import models
+try:
+    from reportlab.pdfgen import canvas
+    from reportlab.lib.pagesizes import A4
+except ImportError:
+    print("Reportlab não instalado: pip install reportlab")
+    canvas = None
 
 # APLICAÇÃO DE VACINA
 
@@ -70,93 +77,86 @@ def _invalidar_indice_paciente():
 
 # GERAÇÃO DE CARTÃO
 
-def gerar_cartao_paciente(paciente_id: int):
+def gerar_cartao_paciente_pdf(paciente_id: int):
 
-    # Gera um arquivo 'cartao_paciente.txt' para um paciente específico
+    utils._log_operacao(f"Iniciando geração de PDF para PACIENTE ID={paciente_id}.")
 
-    utils._log_operacao(f"Iniciando geração de cartão para PACIENTE ID={paciente_id}.")
-    
-    # Verifica se o índice é válido
-    if not os.path.exists(FILE_IDX_PACIENTE_APLIC):
-        msg = f"Falha ao gerar cartão: O índice '{FILE_IDX_PACIENTE_APLIC}' não existe ou está inválido. Reconstrua o índice."
-        print(msg)
-        utils._log_operacao(msg, "ERRO")
-        return False, msg
+    # Verifica índice
+    if not os.path.exists(models.FILE_IDX_PACIENTE_APLIC):
+        return False, "O índice não existe. O sistema precisa reordenar antes de gerar cartões."
 
-    # Busca pelo Paciente
-    paciente = data_access.bin_seek_por_cod(FILE_PACIENTES, RECORD_SIZE_PAC, Paciente, paciente_id)
+    # Busca Paciente
+    paciente = data_access.bin_seek_por_cod(models.FILE_PACIENTES, models.RECORD_SIZE_PAC, models.Paciente, paciente_id)
     if not paciente:
-        msg = f"Falha: Paciente com ID {paciente_id} não encontrado."
-        utils._log_operacao(msg, "ERRO")
-        return False, msg
+        return False, f"Paciente com ID {paciente_id} não encontrado."
 
-    nome_paciente = paciente.nome.decode('utf-8').strip('\\x00')
-    
-    # Busca Rápida no índice
+    nome_paciente = paciente.nome.decode('utf-8').strip('\x00')
+    cpf_paciente = paciente.cpf.decode('utf-8').strip('\x00')
+
+    # Busca IDs das aplicações no índice
     aplicacoes_ids = data_access.bin_seek_all_matches_in_index(
-        FILE_IDX_PACIENTE_APLIC, 
-        RECORD_SIZE_IDX_PAC, 
-        IndicePacienteAplicacao,
+        models.FILE_IDX_PACIENTE_APLIC, 
+        models.RECORD_SIZE_IDX_PAC, 
+        models.IndicePacienteAplicacao,
         paciente_id
     )
 
-    if not aplicacoes_ids:
-        msg = f"Nenhuma aplicação encontrada para o paciente {nome_paciente} (ID {paciente_id})."
-        utils._log_operacao(msg, "INFO")
-        # Cria um cartão vazio
-        with open(CARTAO_PATH, "w", encoding="utf-8") as f_cartao:
-            f_cartao.write(f"CARTÃO DE VACINAÇÃO\n")
-            f_cartao.write("========================================\n")
-            f_cartao.write(f"Paciente: {nome_paciente} (ID: {paciente_id})\n")
-            f_cartao.write("\nNENHUMA APLICAÇÃO REGISTRADA.\n")
-        return True, msg
+    # Configuração do diretório e arquivo
+    pasta_destino = "Cartões"
+    os.makedirs(pasta_destino, exist_ok=True)
+    filename_pdf = os.path.join(pasta_destino, f"Cartao_Vacina_{paciente_id}_{nome_paciente.split()[0]}.pdf")
 
-    # Gerar o arquivo de cartão .txt
     try:
-        total_apps = 0
-        with open(CARTAO_PATH, "w", encoding="utf-8") as f_cartao:
-            f_cartao.write(f"CARTÃO DE VACINAÇÃO\n")
-            f_cartao.write("========================================\n")
-            f_cartao.write(f"Paciente: {nome_paciente} (ID: {paciente_id})\n")
-            f_cartao.write("========================================\n\n")
-            
-            # Para cada ID de aplicação encontrado
+        c = canvas.Canvas(filename_pdf, pagesize=A4)
+        width, height = A4
+        
+        # Cabeçalho
+        c.setFont("Helvetica-Bold", 20)
+        c.drawString(50, height - 50, "Cartão Nacional de Vacinação")
+        
+        c.setFont("Helvetica", 12)
+        c.drawString(50, height - 80, f"Paciente: {nome_paciente}")
+        c.drawString(50, height - 100, f"ID: {paciente_id}  |  CPF: {cpf_paciente}")
+        
+        c.line(50, height - 110, width - 50, height - 110)
+
+        # Listagem
+        y_pos = height - 140
+        c.setFont("Helvetica-Bold", 12)
+        c.drawString(50, y_pos, "Histórico de Aplicações:")
+        y_pos -= 30
+        
+        if not aplicacoes_ids:
+            c.setFont("Helvetica", 12)
+            c.drawString(50, y_pos, "Nenhuma vacina registrada até o momento.")
+        else:
+            c.setFont("Helvetica", 10)
             for app_id in aplicacoes_ids:
-                # Pula direto para o registro no arquivo principal
-                aplicacao = data_access.bin_seek_por_cod(
-                    FILE_APLICACOES, RECORD_SIZE_APLIC, AplicacaoVacina, app_id
-                )
+                aplicacao = data_access.bin_seek_por_cod(models.FILE_APLICACOES, models.RECORD_SIZE_APLIC, models.AplicacaoVacina, app_id)
                 
                 if aplicacao:
-                    # Busca os nomes para o cartão
-                    vacina = data_access.bin_seek_por_cod(
-                        FILE_VACINAS, RECORD_SIZE_VAC, Vacina, aplicacao.cod_vacina_fk
-                    )
-                    func = data_access.bin_seek_por_cod(
-                        FILE_FUNCIONARIOS, RECORD_SIZE_FUNC, Funcionario, aplicacao.cod_funcionario_fk
-                    )
+                    vacina = data_access.bin_seek_por_cod(models.FILE_VACINAS, models.RECORD_SIZE_VAC, models.Vacina, aplicacao.cod_vacina_fk)
+                    func = data_access.bin_seek_por_cod(models.FILE_FUNCIONARIOS, models.RECORD_SIZE_FUNC, models.Funcionario, aplicacao.cod_funcionario_fk)
                     
-                    # Formata a saída
-                    data_str = aplicacao.data_aplicacao.decode('utf-8').strip('\\x00')
-                    
-                    vac_str = vacina.nome_fabricante.decode('utf-8').strip('\\x00') if vacina else "Vacina Desconhecida"
-                    
-                    lote_str = vacina.lote.decode('utf-8').strip('\\x00') if vacina and vacina.lote else ""
-                    f_cartao.write(f"Data: {data_str}\n")
-                    f_cartao.write(f"   Vacina: {vac_str} (Lote: {lote_str})\n")
-                    
-                    func_str = func.nome.decode('utf-8').strip('\\x00') if func else "Funcionário Desconhecido"
-                    f_cartao.write(f"   Aplicada por: {func_str}\n\n")
-                    total_apps += 1
-            
-            f_cartao.write("========================================\n")
-            f_cartao.write(f"Total de aplicações: {total_apps}\n")
+                    vac_nome = vacina.nome_fabricante.decode('utf-8').strip('\x00') if vacina else "Desconhecida"
+                    lote = vacina.lote.decode('utf-8').strip('\x00') if vacina else "--"
+                    data_vac = aplicacao.data_aplicacao.decode('utf-8').strip('\x00')
+                    func_nome = func.nome.decode('utf-8').strip('\x00') if func else "N/A"
 
-        msg = f"Cartão do paciente {nome_paciente} (ID {paciente_id}) gerado com sucesso ({total_apps} aplicações)."
-        utils._log_operacao(msg, "INFO")
-        return True, msg
+                    # Linha do registro
+                    texto = f"DATA: {data_vac} | VACINA: {vac_nome} (Lote: {lote}) | APLICADOR: {func_nome}"
+                    c.drawString(60, y_pos, texto)
+                    y_pos -= 20
+                    
+                    if y_pos < 50: # Nova página se acabar o espaço
+                        c.showPage()
+                        y_pos = height - 50
+
+        c.save()
+        utils._log_operacao(f"PDF gerado com sucesso: {filename_pdf}", "INFO")
+        return True, f"Cartão gerado com sucesso!\nSalvo em: {filename_pdf}"
 
     except Exception as e:
-        msg = f"Erro ao gerar cartão para paciente ID {paciente_id}: {e}"
-        utils._log_operacao(msg, "CRÍTICO")
+        msg = f"Erro ao gerar PDF: {e}"
+        utils._log_operacao(msg, "ERRO")
         return False, msg

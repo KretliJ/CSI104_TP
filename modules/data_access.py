@@ -164,3 +164,79 @@ def deletar_registro_por_cod(filename: str, record_size: int, target_id: int):
         print(f"Erro ao deletar registro {target_id} em '{filename}': {e}")
         return False
 
+def bin_seek_all_matches_in_index(filename: str, record_size: int, structure_class, target_id: int):
+    # Busca binária retorna uma lista de valores correspondentes.
+    # Ler o arquivo de índice onde um Paciente alvo pode ter várias Aplicações.
+    
+    matches = []
+    try:
+        if not os.path.exists(filename):
+            return []
+
+        with open(filename, "rb") as f:
+            file_size = os.path.getsize(filename)
+            num_records = file_size // record_size
+            
+            if num_records == 0:
+                return []
+
+            low = 0
+            high = num_records - 1
+            found_index = -1
+
+            # Busca Binária para encontrar qualqer ocorrência do ID
+            while low <= high:
+                mid = (low + high) // 2
+                f.seek(mid * record_size)
+                buffer = f.read(record_size)
+                record = structure_class.from_buffer_copy(buffer)
+                
+                # Assume que o primeiro campo é a chave de busca
+                current_id = getattr(record, record._fields_[0][0]) 
+
+                if current_id == target_id:
+                    found_index = mid
+                    break
+                elif current_id < target_id:
+                    low = mid + 1
+                else:
+                    high = mid - 1
+            
+            if found_index == -1:
+                return [] # Paciente não encontrado
+            
+            # Backtracking para encontrar todos os IDs numa lista de registros iguais
+
+            start_index = found_index
+            while start_index > 0:
+                f.seek((start_index - 1) * record_size)
+                buffer = f.read(record_size)
+                prev_record = structure_class.from_buffer_copy(buffer)
+                prev_id = getattr(prev_record, prev_record._fields_[0][0])
+                
+                if prev_id == target_id:
+                    start_index -= 1
+                else:
+                    break # O registro anterior é diferente e start_index é o primeiro
+            
+            # Coleta a partir do start_index
+            f.seek(start_index * record_size)
+            while True:
+                buffer = f.read(record_size)
+                if not buffer: 
+                    break
+                record = structure_class.from_buffer_copy(buffer)
+                current_id = getattr(record, record._fields_[0][0])
+                
+                if current_id == target_id:
+                    # Pega o segundo campo valor alvo: cod_aplicacao_fk
+                    value_field = getattr(record, record._fields_[1][0])
+                    matches.append(value_field)
+                else:
+                    break
+                    
+        return matches
+
+    except Exception as e:
+        print(f"Erro na busca indexada em '{filename}': {e}")
+        return []

@@ -43,3 +43,150 @@
 [2025-11-07 16:58:34] [INFO] - Auto-Sort: Mergesort de 'files\aplicacoes.dat' concluído.
 [2025-11-07 16:58:34] [INFO] - Índice 'files\idx_paciente_aplic.dat' reconstruído. 2 registros.
 [2025-11-07 16:58:34] [INFO] - Auto-Sort: Índice 'files\idx_paciente_aplic.dat' reconstruído.
+[2025-11-25 15:32:45] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 15:32:45] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 15:32:45] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 15:32:45] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 15:35:36] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 15:35:36] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 15:35:36] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 15:35:36] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 15:37:27] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 15:37:27] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 15:37:27] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 15:37:27] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 15:42:44] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 15:42:44] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 15:42:44] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 15:42:44] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 15:43:29] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 15:43:29] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 15:43:29] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 15:43:45] [INFO] - Tentativa de aplicação: PAC=120, VAC=1423, FUNC=122
+[2025-11-25 15:43:45] [INFO] - Sucesso: Aplicação 1 registrada. (Arquivo files\aplicacoes.dat agora desordenado).
+[2025-11-25 15:43:45] [AVISO] - Índice 'files\idx_paciente_aplic.dat' invalidado (requer reconstrução).
+[2025-11-25 15:43:49] [INFO] - Auto-Sort: Mergesort automático iniciado para 'files\aplicacoes.dat'.
+[2025-11-25 15:43:49] [INFO] - Mergesort de 'files\aplicacoes.dat' concluído. Duração: 0.02s
+[2025-11-25 15:43:49] [INFO] - Auto-Sort: Mergesort de 'files\aplicacoes.dat' concluído.
+[2025-11-25 15:43:49] [INFO] - Índice 'files\idx_paciente_aplic.dat' reconstruído. 1 registros.
+[2025-11-25 15:43:49] [INFO] - Auto-Sort: Índice 'files\idx_paciente_aplic.dat' reconstruído.
+[2025-11-25 15:44:14] [INFO] - Tentativa de aplicação: PAC=443, VAC=352, FUNC=344
+[2025-11-25 15:44:14] [INFO] - Sucesso: Aplicação 2 registrada. (Arquivo files\aplicacoes.dat agora desordenado).
+[2025-11-25 15:44:14] [ERRO] - Falha ao invalidar índice 'files\idx_paciente_aplic.dat': [WinError 183] Não é possível criar um arquivo já existente: 'files\\idx_paciente_aplic.dat' -> 'files\\idx_paciente_aplic.dat.invalid'
+[2025-11-25 15:44:15] [INFO] - Auto-Sort: Mergesort automático iniciado para 'files\aplicacoes.dat'.
+[2025-11-25 15:44:15] [INFO] - Mergesort de 'files\aplicacoes.dat' concluído. Duração: 0.01s
+[2025-11-25 15:44:15] [INFO] - Auto-Sort: Mergesort de 'files\aplicacoes.dat' concluído.
+[2025-11-25 15:44:15] [INFO] - Índice 'files\idx_paciente_aplic.dat' reconstruído. 2 registros.
+[2025-11-25 15:44:15] [INFO] - Auto-Sort: Índice 'files\idx_paciente_aplic.dat' reconstruído.
+[2025-11-25 15:44:32] [INFO] - Tentativa de aplicação: PAC=1657, VAC=3421, FUNC=1566
+[2025-11-25 15:44:32] [INFO] - Sucesso: Aplicação 3 registrada. (Arquivo files\aplicacoes.dat agora desordenado).
+[2025-11-25 15:44:32] [ERRO] - Falha ao invalidar índice 'files\idx_paciente_aplic.dat': [WinError 183] Não é possível criar um arquivo já existente: 'files\\idx_paciente_aplic.dat' -> 'files\\idx_paciente_aplic.dat.invalid'
+[2025-11-25 15:44:34] [INFO] - Auto-Sort: Mergesort automático iniciado para 'files\aplicacoes.dat'.
+[2025-11-25 15:44:34] [INFO] - Mergesort de 'files\aplicacoes.dat' concluído. Duração: 0.03s
+[2025-11-25 15:44:34] [INFO] - Auto-Sort: Mergesort de 'files\aplicacoes.dat' concluído.
+[2025-11-25 15:44:34] [INFO] - Índice 'files\idx_paciente_aplic.dat' reconstruído. 3 registros.
+[2025-11-25 15:44:34] [INFO] - Auto-Sort: Índice 'files\idx_paciente_aplic.dat' reconstruído.
+[2025-11-25 15:58:36] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 15:58:36] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 15:58:36] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 15:58:36] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 15:59:05] [INFO] - Geração em lote: 5000 aplicações inseridas.
+[2025-11-25 15:59:06] [ERRO] - Falha ao invalidar índice 'files\idx_paciente_aplic.dat': [WinError 183] Não é possível criar um arquivo já existente: 'files\\idx_paciente_aplic.dat' -> 'files\\idx_paciente_aplic.dat.invalid'
+[2025-11-25 15:59:06] [INFO] - Auto-Sort: Mergesort automático iniciado para 'files\aplicacoes.dat'.
+[2025-11-25 15:59:06] [INFO] - Mergesort de 'files\aplicacoes.dat' concluído. Duração: 0.08s
+[2025-11-25 15:59:06] [INFO] - Auto-Sort: Mergesort de 'files\aplicacoes.dat' concluído.
+[2025-11-25 15:59:06] [INFO] - Índice 'files\idx_paciente_aplic.dat' reconstruído. 5003 registros.
+[2025-11-25 15:59:06] [INFO] - Auto-Sort: Índice 'files\idx_paciente_aplic.dat' reconstruído.
+[2025-11-25 15:59:21] [INFO] - Geração em lote: 5000 aplicações inseridas.
+[2025-11-25 15:59:22] [ERRO] - Falha ao invalidar índice 'files\idx_paciente_aplic.dat': [WinError 183] Não é possível criar um arquivo já existente: 'files\\idx_paciente_aplic.dat' -> 'files\\idx_paciente_aplic.dat.invalid'
+[2025-11-25 15:59:22] [INFO] - Auto-Sort: Mergesort automático iniciado para 'files\aplicacoes.dat'.
+[2025-11-25 15:59:22] [CRÍTICO] - Falha no Mergesort: '<' not supported between instances of 'AplicacaoVacina' and 'AplicacaoVacina'
+[2025-11-25 15:59:22] [INFO] - Mergesort de 'files\aplicacoes.dat' concluído. Duração: 0.07s
+[2025-11-25 15:59:22] [INFO] - Auto-Sort: Mergesort de 'files\aplicacoes.dat' concluído.
+[2025-11-25 15:59:22] [INFO] - Índice 'files\idx_paciente_aplic.dat' reconstruído. 10003 registros.
+[2025-11-25 15:59:22] [INFO] - Auto-Sort: Índice 'files\idx_paciente_aplic.dat' reconstruído.
+[2025-11-25 16:03:35] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 16:03:35] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 16:03:35] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 16:03:35] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 16:05:42] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 16:05:42] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 16:05:42] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 16:05:42] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 16:06:18] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 16:06:18] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 16:06:18] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 16:06:18] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 16:06:30] [INFO] - Iniciando geração de PDF para PACIENTE ID=13254.
+[2025-11-25 16:06:37] [INFO] - Iniciando geração de PDF para PACIENTE ID=1234.
+[2025-11-25 16:12:03] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 16:12:03] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 16:12:03] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 16:12:03] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 16:12:11] [INFO] - Iniciando geração de PDF para PACIENTE ID=1234.
+[2025-11-25 16:12:11] [INFO] - PDF gerado com sucesso: Cartões\Cartao_Vacina_1234_Clara.pdf
+[2025-11-25 16:13:06] [INFO] - Iniciando geração de PDF para PACIENTE ID=23918.
+[2025-11-25 16:13:06] [INFO] - PDF gerado com sucesso: Cartões\Cartao_Vacina_23918_Lara.pdf
+[2025-11-25 16:21:51] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 16:21:51] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 16:21:51] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 16:21:51] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 16:22:47] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 16:22:47] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 16:22:47] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 16:22:47] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 16:22:59] [INFO] - Geração em lote: 50 aplicações inseridas (para o Paciente 1234).
+[2025-11-25 16:23:00] [ERRO] - Falha ao invalidar índice 'files\idx_paciente_aplic.dat': [WinError 183] Não é possível criar um arquivo já existente: 'files\\idx_paciente_aplic.dat' -> 'files\\idx_paciente_aplic.dat.invalid'
+[2025-11-25 16:23:00] [INFO] - Auto-Sort: Mergesort automático iniciado para 'files\aplicacoes.dat'.
+[2025-11-25 16:23:00] [CRÍTICO] - Falha no Mergesort: '<' not supported between instances of 'AplicacaoVacina' and 'AplicacaoVacina'
+[2025-11-25 16:23:00] [INFO] - Mergesort de 'files\aplicacoes.dat' concluído. Duração: 0.06s
+[2025-11-25 16:23:00] [INFO] - Auto-Sort: Mergesort de 'files\aplicacoes.dat' concluído.
+[2025-11-25 16:23:00] [INFO] - Índice 'files\idx_paciente_aplic.dat' reconstruído. 10053 registros.
+[2025-11-25 16:23:00] [INFO] - Auto-Sort: Índice 'files\idx_paciente_aplic.dat' reconstruído.
+[2025-11-25 16:23:04] [ERRO] - Falha ao invalidar índice 'files\idx_paciente_aplic.dat': [WinError 183] Não é possível criar um arquivo já existente: 'files\\idx_paciente_aplic.dat' -> 'files\\idx_paciente_aplic.dat.invalid'
+[2025-11-25 16:23:04] [INFO] - Auto-Sort: Mergesort automático iniciado para 'files\aplicacoes.dat'.
+[2025-11-25 16:23:04] [CRÍTICO] - Falha no Mergesort: '<' not supported between instances of 'AplicacaoVacina' and 'AplicacaoVacina'
+[2025-11-25 16:23:04] [INFO] - Mergesort de 'files\aplicacoes.dat' concluído. Duração: 0.04s
+[2025-11-25 16:23:04] [INFO] - Auto-Sort: Mergesort de 'files\aplicacoes.dat' concluído.
+[2025-11-25 16:23:04] [INFO] - Índice 'files\idx_paciente_aplic.dat' reconstruído. 10053 registros.
+[2025-11-25 16:23:04] [INFO] - Auto-Sort: Índice 'files\idx_paciente_aplic.dat' reconstruído.
+[2025-11-25 16:23:17] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 16:23:17] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 16:23:18] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 16:23:18] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 16:23:33] [INFO] - Iniciando geração de PDF para PACIENTE ID=1234.
+[2025-11-25 16:23:33] [INFO] - PDF gerado com sucesso: Cartões\Cartao_Vacina_1234_Clara.pdf
+[2025-11-25 16:24:11] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 16:24:11] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 16:24:12] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 16:24:12] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 16:24:29] [INFO] - Tentativa de aplicação: PAC=1234, VAC=11, FUNC=1
+[2025-11-25 16:24:29] [INFO] - Sucesso: Aplicação 10054 registrada. (Arquivo files\aplicacoes.dat agora desordenado).
+[2025-11-25 16:24:29] [ERRO] - Falha ao invalidar índice 'files\idx_paciente_aplic.dat': [WinError 183] Não é possível criar um arquivo já existente: 'files\\idx_paciente_aplic.dat' -> 'files\\idx_paciente_aplic.dat.invalid'
+[2025-11-25 16:24:32] [INFO] - Auto-Sort: Mergesort automático iniciado para 'files\aplicacoes.dat'.
+[2025-11-25 16:24:32] [CRÍTICO] - Falha no Mergesort: '<' not supported between instances of 'AplicacaoVacina' and 'AplicacaoVacina'
+[2025-11-25 16:24:32] [INFO] - Mergesort de 'files\aplicacoes.dat' concluído. Duração: 0.06s
+[2025-11-25 16:24:32] [INFO] - Auto-Sort: Mergesort de 'files\aplicacoes.dat' concluído.
+[2025-11-25 16:24:32] [INFO] - Índice 'files\idx_paciente_aplic.dat' reconstruído. 10054 registros.
+[2025-11-25 16:24:32] [INFO] - Auto-Sort: Índice 'files\idx_paciente_aplic.dat' reconstruído.
+[2025-11-25 16:24:36] [INFO] - Iniciando geração de PDF para PACIENTE ID=1234.
+[2025-11-25 16:24:36] [INFO] - PDF gerado com sucesso: Cartões\Cartao_Vacina_1234_Clara.pdf
+[2025-11-25 16:28:00] [MANUAL] - Correção de erro do mergesort
+[2025-11-25 16:28:00] [MANUAL] - Estrutura de aplicação vacina não tinha funções de comparação entre objetos de mesmo tipo requeridos pela função mergesort
+[2025-11-25 16:28:43] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 16:28:43] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 16:28:43] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 16:28:43] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 16:28:56] [INFO] - Geração em lote: 10 aplicações inseridas (para o Paciente 115).
+[2025-11-25 16:28:57] [ERRO] - Falha ao invalidar índice 'files\idx_paciente_aplic.dat': [WinError 183] Não é possível criar um arquivo já existente: 'files\\idx_paciente_aplic.dat' -> 'files\\idx_paciente_aplic.dat.invalid'
+[2025-11-25 16:28:57] [INFO] - Auto-Sort: Mergesort automático iniciado para 'files\aplicacoes.dat'.
+[2025-11-25 16:28:57] [INFO] - Mergesort de 'files\aplicacoes.dat' concluído. Duração: 0.07s
+[2025-11-25 16:28:57] [INFO] - Auto-Sort: Mergesort de 'files\aplicacoes.dat' concluído.
+[2025-11-25 16:28:57] [INFO] - Índice 'files\idx_paciente_aplic.dat' reconstruído. 10064 registros.
+[2025-11-25 16:28:57] [INFO] - Auto-Sort: Índice 'files\idx_paciente_aplic.dat' reconstruído.
+[2025-11-25 16:30:55] [INFO] - Verificação OK: 'files\funcionarios.dat' está ordenado.
+[2025-11-25 16:30:55] [INFO] - Verificação OK: 'files\pacientes.dat' está ordenado.
+[2025-11-25 16:30:55] [INFO] - Verificação OK: 'files\vacinas.dat' está ordenado.
+[2025-11-25 16:30:55] [INFO] - Verificação OK: 'files\aplicacoes.dat' está ordenado.
+[2025-11-25 16:31:02] [INFO] - Iniciando geração de PDF para PACIENTE ID=115.
+[2025-11-25 16:31:02] [INFO] - PDF gerado com sucesso: Cartões\Cartao_Vacina_115_Silvia.pdf

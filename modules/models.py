@@ -29,7 +29,7 @@ class Funcionario(ctypes.Structure):
         cpf_str = self.cpf.decode('utf-8').strip('\\x00')
         data_str = self.data_nascimento.decode('utf-8').strip('\\x00')
         
-        return (f"**********************************************\n"
+        return (f"________________________________________\n\n"
                 f"Funcionario de codigo {self.cod}\n"
                 f"Nome: {nome_str}\n"
                 f"CPF: {cpf_str}\n"
@@ -62,16 +62,16 @@ class Paciente(ctypes.Structure):
         data_str = self.data_nascimento.decode('utf-8').strip('\\x00')
         endereco_str = self.endereco.decode('utf-8').strip('\\x00')
         
-        return (f"**********************************************\n"
+        return (f"________________________________________\n\n"
                 f"Paciente de codigo {self.cod_paciente}\n"
                 f"Nome: {nome_str}\n"
                 f"CPF: {cpf_str}\n"
                 f"Data de Nascimento: {data_str}\n"
                 f"Endereço: {endereco_str}\n")
     def __lt__(self, other):
-        return self.cod < other.cod
+        return self.cod_paciente < other.cod_paciente
     def __eq__(self, other):
-        return self.cod == other.cod
+        return self.cod_paciente == other.cod_paciente
 
 class Vacina(ctypes.Structure):
     _fields_ = [
@@ -94,16 +94,16 @@ class Vacina(ctypes.Structure):
         data_str = self.data_validade.decode('utf-8').strip('\\x00')
         descricao_str = self.descricao.decode('utf-8').strip('\\x00')
     
-        return (f"**********************************************\n"
+        return (f"________________________________________\n\n"
                 f"Vacina de codigo {self.cod_vacina}\n"
                 f"Nome: {nome_str}\n"
                 f"Lote: {lote_str}\n"
                 f"Data de validade: {data_str}\n"
                 f"Descrição: {descricao_str}\n")
     def __lt__(self, other):
-        return self.cod < other.cod
+        return self.cod_vacina < other.cod_vacina
     def __eq__(self, other):
-        return self.cod == other.cod
+        return self.cod_vacina == other.cod_vacina
 
 
 class AplicacaoVacina(ctypes.Structure):
@@ -115,6 +115,21 @@ class AplicacaoVacina(ctypes.Structure):
         ("cod_funcionario_fk", ctypes.c_int),# Chave estrangeira
         ("data_aplicacao", ctypes.c_char * 11),
     ]
+    def __str__(self):
+        # Decodifica a data de bytes para string
+        data_str = self.data_aplicacao.decode('utf-8').strip('\x00')
+        
+        return (f"________________________________________\n\n"
+                f"Aplicação Código: {self.cod_aplicacao}\n"
+                f"Paciente (ID): {self.cod_paciente_fk}\n"
+                f"Vacina (ID): {self.cod_vacina_fk}\n"
+                f"Funcionário (ID): {self.cod_funcionario_fk}\n"
+                f"Data: {data_str}\n")
+    def __lt__(self, other):
+        return self.cod_aplicacao < other.cod_aplicacao
+    
+    def __eq__(self, other):
+        return self.cod_aplicacao == other.cod_aplicacao
 
 class IndicePacienteAplicacao(ctypes.Structure):
     _fields_ = [
@@ -150,4 +165,4 @@ FILE_APLICACOES = os.path.join(FILE_PATH, "aplicacoes.dat")
 FILE_IDX_PACIENTE_APLIC = os.path.join(FILE_PATH, "idx_paciente_aplic.dat")
 
 LOG_FILE = os.path.join(FILE_PATH, "operation_log.txt")
-CARTAO_PATH = FILE_PATH # Diretório para salvar os cartões
+CARTAO_PATH = FILE_PATH

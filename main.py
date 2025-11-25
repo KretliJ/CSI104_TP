@@ -91,36 +91,68 @@ class App(tk.Tk):
         super().__init__()
         
         self.title("Sistema de Vacinação - (Arquivos Binários)")
-        self.geometry("700x550")
+        self.geometry("700x600")
         self.configure(bg="#f0f0f0")
 
         # Fila para comunicação entre a thread de sort e a interface
         self.sort_queue = queue.Queue()
 
-        # Frame de status
-        self.status_frame = ttk.Frame(self, relief="sunken", padding=5)
+        # Container Principal
+        main_frame = tk.Frame(self)
+        main_frame.pack(fill="both", expand=True)
+
+        self.status_frame = ttk.Frame(main_frame, relief="sunken", padding=5)
         self.status_label = ttk.Label(self.status_frame, text="Status: Pronto.", font=("Arial", 10))
         self.status_label.pack(side="left")
         self.status_frame.pack(side="bottom", fill="x", padx=10, pady=(0, 10))
 
-        # Container principal
-        self.container = tk.Frame(self)
-        self.container.pack(fill="both", expand=True, padx=10, pady=10)
+        # Canvas e Scrollbar
+        self.canvas = tk.Canvas(main_frame, borderwidth=0, background="#f0f0f0")
+        self.scrollbar = ttk.Scrollbar(main_frame, orient="vertical", command=self.canvas.yview)
+        
+        # Container de Conteúdo rolável
+        self.container = tk.Frame(self.canvas, background="#f0f0f0")
+
+        # Configurações de rolagem
+        self.scrollable_window = self.canvas.create_window((0, 0), window=self.container, anchor="nw")
+
+        def configure_scroll_region(event):
+            self.canvas.configure(scrollregion=self.canvas.bbox("all"))
+
+        def configure_window_width(event):
+            self.canvas.itemconfig(self.scrollable_window, width=event.width)
+
+        self.container.bind("<Configure>", configure_scroll_region)
+        self.canvas.bind("<Configure>", configure_window_width)
+        
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.scrollbar.pack(side="right", fill="y")
+        self.canvas.pack(side="left", fill="both", expand=True)
+
+        self.bind_all("<MouseWheel>", self._on_mousewheel)
 
         # Dicionário de frames
         self.frames = {}
         
-        # Criar e guardar cada frame
-        for F in (FrameHome, FrameLista, FrameAplicacao): 
+        classes_de_frames = [FrameHome, FrameLista, FrameAplicacao, FrameGerarCartao, FrameManutencao]
+
+        for F in classes_de_frames: 
             frame_name = F.__name__
             frame = F(parent=self.container, controller=self)
             self.frames[frame_name] = frame
             frame.grid(row=0, column=0, sticky="nsew") 
 
+        self.container.grid_rowconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
+
         self.mostrar_frame("FrameHome")
 
+    def _on_mousewheel(self, event):
+        self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+
     def mostrar_frame(self, frame_name: str):
-        """Traz um frame (página) para a frente."""
+        # Traz um frame para a frente
         frame = self.frames[frame_name]
         frame.tkraise()
         if hasattr(frame, 'on_show'):
@@ -218,44 +250,146 @@ class FrameHome(ttk.Frame):
         super().__init__(parent)
         self.controller = controller
         
-        lbl_title = ttk.Label(self, text="Menu Principal", font=("Arial", 20, "bold"))
-        lbl_title.pack(pady=20)
+        lbl_title = ttk.Label(self, text="Sistema de Vacinação", font=("Arial", 22, "bold"))
+        lbl_title.pack(pady=30)
         
-        lbl_desc = ttk.Label(self, text="Selecione uma operação:", font=("Arial", 12))
-        lbl_desc.pack(pady=(0, 15))
+        # Botões Principais
+        frame_botoes = ttk.Frame(self)
+        frame_botoes.pack(fill="x", padx=50)
 
-        style = ttk.Style()
-        style.configure("TButton", font=("Arial", 12), padding=10)
-        
-        # Botões de Listagem
-        self.btn_func = ttk.Button(self, text="Listar Funcionários",
-            command=lambda: self.controller.frames["FrameLista"].preparar_lista(
-                "Lista de Funcionários", models.FILE_FUNCIONARIOS, models.RECORD_SIZE_FUNC, models.Funcionario
-            )
-        )
-        self.btn_func.pack(fill="x", pady=5)
-        
-        self.btn_pac = ttk.Button(self, text="Listar Pacientes",
+        self.btn_pac = ttk.Button(frame_botoes, text="📂 Listar Pacientes",
             command=lambda: self.controller.frames["FrameLista"].preparar_lista(
                 "Lista de Pacientes", models.FILE_PACIENTES, models.RECORD_SIZE_PAC, models.Paciente
-            )
-        )
+            ))
         self.btn_pac.pack(fill="x", pady=5)
-        
-        self.btn_vac = ttk.Button(self, text="Listar Vacinas",
+
+        self.btn_vac = ttk.Button(frame_botoes, text="📂 Listar Vacinas",
             command=lambda: self.controller.frames["FrameLista"].preparar_lista(
                 "Lista de Vacinas", models.FILE_VACINAS, models.RECORD_SIZE_VAC, models.Vacina
-            )
-        )
+            ))
         self.btn_vac.pack(fill="x", pady=5)
+
+        self.btn_func = ttk.Button(frame_botoes, text="📂 Listar Funcionários",
+            command=lambda: self.controller.frames["FrameLista"].preparar_lista(
+                "Lista de Funcionários", models.FILE_FUNCIONARIOS, models.RECORD_SIZE_FUNC, models.Funcionario
+            ))
+        self.btn_func.pack(fill="x", pady=5)
+        
+        ttk.Separator(frame_botoes, orient='horizontal').pack(fill='x', pady=15)
+
+        self.btn_aplicar = ttk.Button(frame_botoes, text="💉 Registrar Nova Aplicação",
+                                 command=lambda: controller.mostrar_frame("FrameAplicacao"))
+        self.btn_aplicar.pack(fill="x", pady=5)
+
+        self.btn_cartao = ttk.Button(frame_botoes, text="📄 Gerar Cartão (PDF)",
+                                command=lambda: controller.mostrar_frame("FrameGerarCartao"))
+        self.btn_cartao.pack(fill="x", pady=5)
+        
+        ttk.Separator(frame_botoes, orient='horizontal').pack(fill='x', pady=15)
+        
+        self.btn_manut = ttk.Button(frame_botoes, text="🛠️ Manutenção e Debug",
+                                command=lambda: controller.mostrar_frame("FrameManutencao"))
+        self.btn_manut.pack(fill="x", pady=5)
+
+
+    def _gerar_random(self, controller):
+        resposta = messagebox.askyesno("Confirmar", "Isso irá gerar 5.000 registros aleatórios e desordenar o arquivo.\nDeseja continuar?")
+        if resposta:
+            sucesso, msg = utils.gerar_lote_aplicacoes_aleatorias(5000)
+            if sucesso:
+                messagebox.showinfo("Sucesso", f"{msg}\n\nO sistema irá iniciar a reordenação agora.")
+                # Reordenação automática
+                services._invalidar_indice_paciente() # Garante que o indice fique inválido
+                controller._iniciar_reordenacao_automatica()
+            else:
+                messagebox.showerror("Erro", msg)
         
         # Botões de Ação
         separator = ttk.Separator(self, orient='horizontal')
         separator.pack(fill='x', pady=15)
 
-        self.btn_aplicar = ttk.Button(self, text="Registrar Nova Aplicação",
-                                 command=lambda: controller.mostrar_frame("FrameAplicacao"))
-        self.btn_aplicar.pack(fill="x", pady=5)
+        # self.btn_aplicar = ttk.Button(self, text="Registrar Nova Aplicação",
+        #                          command=lambda: controller.mostrar_frame("FrameAplicacao"))
+        # self.btn_aplicar.pack(fill="x", pady=5)
+
+# PÁGINA DE DEBUG
+
+class FrameManutencao(ttk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+        
+        lbl_title = ttk.Label(self, text="Manutenção e Debug", font=("Arial", 18, "bold"))
+        lbl_title.pack(pady=20)
+        
+        # Área de Geração de Dados
+        group_gen = ttk.LabelFrame(self, text=" Gerador de Dados de Teste ", padding=15)
+        group_gen.pack(padx=20, pady=10, fill="x")
+        
+        ttk.Label(group_gen, text="Gerar aplicações aleatórias.", font=("Arial", 10, "italic")).pack(pady=(0,10))
+
+        frame_form = ttk.Frame(group_gen)
+        frame_form.pack()
+
+        # Input ID Paciente
+        ttk.Label(frame_form, text="ID Paciente Alvo (Opcional):").grid(row=0, column=0, sticky="e", padx=5)
+        self.entry_pac_id = ttk.Entry(frame_form, width=10)
+        self.entry_pac_id.grid(row=0, column=1, sticky="w", padx=5)
+        ttk.Label(frame_form, text="(Deixe vazio para aleatório)").grid(row=0, column=2, sticky="w", padx=5)
+
+        # Input Quantidade
+        ttk.Label(frame_form, text="Quantidade:").grid(row=1, column=0, sticky="e", padx=5, pady=5)
+        self.entry_qtd = ttk.Entry(frame_form, width=10)
+        self.entry_qtd.insert(0, "50") # Default
+        self.entry_qtd.grid(row=1, column=1, sticky="w", padx=5, pady=5)
+
+        self.btn_gerar = ttk.Button(group_gen, text="Gerar Dados", command=self._gerar_dados)
+        self.btn_gerar.pack(pady=10)
+        
+        # Área de Reordenação Manual
+        group_sort = ttk.LabelFrame(self, text=" Ferramentas de Arquivo ", padding=15)
+        group_sort.pack(padx=20, pady=10, fill="x")
+        
+        self.btn_sort = ttk.Button(group_sort, text="Forçar Reordenação e Indexação Agora", 
+                                   command=self._forcar_sort)
+        self.btn_sort.pack(fill="x")
+
+        # Botão Voltar
+        self.btn_voltar = ttk.Button(self, text="Voltar ao Menu",
+                                command=lambda: controller.mostrar_frame("FrameHome"))
+        self.btn_voltar.pack(pady=20)
+
+    def _gerar_dados(self):
+        qtd_str = self.entry_qtd.get()
+        pac_id_str = self.entry_pac_id.get()
+        
+        if not qtd_str.isdigit():
+            messagebox.showerror("Erro", "Quantidade inválida.")
+            return
+            
+        qtd = int(qtd_str)
+        pac_id = int(pac_id_str) if pac_id_str.isdigit() else None
+        
+        msg_confirm = f"Gerar {qtd} registros"
+        if pac_id:
+            msg_confirm += f" APENAS para o Paciente {pac_id}?"
+        else:
+            msg_confirm += " para pacientes aleatórios?"
+            
+        if messagebox.askyesno("Confirmar", f"{msg_confirm}\nIsso deixará o arquivo desordenado."):
+            sucesso, msg = utils.gerar_lote_aplicacoes_aleatorias(qtd, pac_id)
+            if sucesso:
+                messagebox.showinfo("Sucesso", msg + "\nIniciando reordenação...")
+                # Invalida indice e chama reordenação
+                services._invalidar_indice_paciente()
+                self.controller._iniciar_reordenacao_automatica()
+            else:
+                messagebox.showerror("Erro", msg)
+
+    def _forcar_sort(self):
+        if messagebox.askyesno("Confirmar", "Deseja rodar o processo de Mergesort e Indexação manualmente?"):
+             services._invalidar_indice_paciente()
+             self.controller._iniciar_reordenacao_automatica()
         
 # PÁGINA DE LISTAGEM
 
@@ -390,6 +524,51 @@ class FrameAplicacao(ttk.Frame):
             messagebox.showerror("Erro de Validação", "Os IDs devem ser números inteiros.")
         except Exception as e:
             messagebox.showerror("Erro Inesperado", f"Ocorreu um erro: {e}")
+
+# GERAR CARTÃO
+
+class FrameGerarCartao(ttk.Frame):
+    def __init__(self, parent, controller):
+        super().__init__(parent)
+        self.controller = controller
+        
+        lbl_title = ttk.Label(self, text="Gerar Cartão de Vacinação (PDF)", font=("Arial", 18, "bold"))
+        lbl_title.pack(pady=30)
+        
+        form_frame = ttk.Frame(self)
+        form_frame.pack(pady=10)
+        
+        ttk.Label(form_frame, text="Informe o ID do Paciente:", font=("Arial", 12)).pack(side="left", padx=5)
+        self.entry_id = ttk.Entry(form_frame, font=("Arial", 12), width=15)
+        self.entry_id.pack(side="left", padx=5)
+        
+        btn_gerar = ttk.Button(self, text="Gerar PDF", command=self._gerar_pdf)
+        btn_gerar.pack(pady=20, ipadx=10, ipady=5)
+        
+        btn_voltar = ttk.Button(self, text="Voltar ao Menu",
+                                command=lambda: controller.mostrar_frame("FrameHome"))
+        btn_voltar.pack(pady=5)
+
+    def _gerar_pdf(self):
+        try:
+            pac_id_str = self.entry_id.get()
+            if not pac_id_str.isdigit():
+                messagebox.showerror("Erro", "Por favor, insira um ID numérico válido.")
+                return
+            
+            pac_id = int(pac_id_str)
+            
+            # Chama o serviço
+            sucesso, msg = services.gerar_cartao_paciente_pdf(pac_id)
+            
+            if sucesso:
+                messagebox.showinfo("Sucesso", msg)
+                self.entry_id.delete(0, tk.END)
+            else:
+                messagebox.showwarning("Atenção", msg)
+                
+        except Exception as e:
+            messagebox.showerror("Erro Crítico", f"Falha na interface: {e}")
 
 # PONTO DE ENTRADA
 

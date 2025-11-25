@@ -9,6 +9,7 @@ from .models import (
     Funcionario, Paciente, Vacina, AplicacaoVacina, IndicePacienteAplicacao,
     LOG_FILE
 )
+from . import models
 
 # FUNÇÃO DE LOG 
 
@@ -473,3 +474,70 @@ def verifica_ordenacao(filename, structure_class, record_size_bytes):
     except Exception as e:
         print(f"  -> Erro ao verificar ordenação de '{filename}': {e}")
         return False
+    
+    
+def gerar_lote_aplicacoes_aleatorias(quantidade=1000, paciente_id_fixo=None):
+    # Gera registros de aplicações para debug
+    # Se paciente_id_fixo informado, gera todas as aplicações para este paciente.
+    
+    msg_target = f"para o Paciente {paciente_id_fixo}" if paciente_id_fixo else "para pacientes aleatórios"
+    print(f"Gerando {quantidade} aplicações aleatórias {msg_target}...")
+    
+    try:
+        # Descobrir os limites dos IDs existentes
+        if not os.path.exists(models.FILE_PACIENTES) or not os.path.exists(models.FILE_VACINAS) or not os.path.exists(models.FILE_FUNCIONARIOS):
+            return False, "Arquivos de dados principais não encontrados."
+
+        max_pac = os.path.getsize(models.FILE_PACIENTES) // models.RECORD_SIZE_PAC
+        max_vac = os.path.getsize(models.FILE_VACINAS) // models.RECORD_SIZE_VAC
+        max_func = os.path.getsize(models.FILE_FUNCIONARIOS) // models.RECORD_SIZE_FUNC
+
+        if max_pac == 0 or max_vac == 0 or max_func == 0:
+            return False, "As bases de dados estão vazias. Gere os dados principais primeiro."
+
+        # Passado um ID fixo: valida se está dentro do range
+        if paciente_id_fixo and (paciente_id_fixo < 1 or paciente_id_fixo > max_pac):
+            return False, f"ID de Paciente {paciente_id_fixo} é inválido (Máx: {max_pac})."
+
+        buffer = bytearray()
+        
+        # Próximo ID de aplicação
+        try:
+             next_id = (os.path.getsize(models.FILE_APLICACOES) // models.RECORD_SIZE_APLIC) + 1
+        except FileNotFoundError:
+             next_id = 1
+
+        for i in range(quantidade):
+            cod_app = next_id + i
+            
+            if paciente_id_fixo:
+                cod_pac = paciente_id_fixo
+            else:
+                cod_pac = random.randint(1, max_pac)
+                
+            cod_vac = random.randint(1, max_vac)
+            cod_func = random.randint(1, max_func)
+            
+            # Data aleatória
+            dia = random.randint(1, 28)
+            mes = random.randint(1, 12)
+            ano = random.randint(2020, 2025)
+            data_app = f"{dia:02d}/{mes:02d}/{ano}"
+
+            nova_app = models.AplicacaoVacina(
+                cod_app, cod_pac, cod_vac, cod_func, data_app.encode('utf-8')
+            )
+            buffer.extend(nova_app)
+
+        # Escrever no disco
+        with open(models.FILE_APLICACOES, "ab") as f:
+            f.write(buffer)
+            
+        _log_operacao(f"Geração em lote: {quantidade} aplicações inseridas ({msg_target}).", "INFO")
+        return True, f"{quantidade} aplicações geradas com sucesso!"
+
+    except Exception as e:
+        msg = f"Erro na geração aleatória: {e}"
+        _log_operacao(msg, "ERRO")
+        print(msg)
+        return False, msg
